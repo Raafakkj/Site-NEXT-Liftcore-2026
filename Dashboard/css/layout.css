@@ -1,0 +1,142 @@
+body {
+  display: flex;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  z-index: 9999;
+  width: 264px;
+  min-height: 100vh;
+  padding: 24px 18px;
+  background: #0f172a;
+  color: #ffffff;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  transition: width var(--transition), transform var(--transition), background var(--transition);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.logo img {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius);
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+
+.menu-item i {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: var(--border-radius);
+  color: #94a3b8;
+  text-align: center;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.menu-item.active i {
+  background: rgba(147, 197, 253, 0.14);
+  color: #93c5fd;
+}
+
+.main-container {
+  width: 100%;
+  min-width: 0;
+  margin-left: 0;
+  padding: 28px clamp(24px, 4vw, 56px);
+  transition: width var(--transition), margin var(--transition);
+}
+
+.topbar {
+  position: static;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: min(100%, 1320px);
+  min-height: auto;
+  margin: 0 auto 28px;
+  padding: 0;
+  background: transparent;
+  border-bottom: 0;
+  backdrop-filter: none;
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.topbar-right {
+  align-items: center;
+}
+
+.eyebrow {
+  margin-bottom: 6px;
+  color: var(--primary-color);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.topbar h2 {
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.15;
+}
+
+.topbar-subtitle {
+  margin-top: 6px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.content {
+  width: min(100%, 1320px);
+  margin: 0 auto;
+  padding: 0;
+}

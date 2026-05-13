@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carregando | Liftcore Maintenance</title>
+  <link rel="stylesheet" href="./css/loading.css">
+  <script src="./js/local-api.js" defer></script>
+  <script src="./js/loading.js" defer></script>
+</head>
+<body>
+  <main class="loading-shell" aria-live="polite">
+    <section class="loading-card" aria-labelledby="loadingTitle">
+      <img class="loading-mark" src="./assets/liftcore-logo.png" alt="" aria-hidden="true">
+      <p class="eyebrow">Inicialização</p>
+      <h1 id="loadingTitle">Preparando o painel</h1>
+      <p class="loading-status" id="loadingStatus">Validando sessão</p>
+      <div class="progress-track" aria-label="Progresso de carregamento">
+        <div class="progress-bar" id="loadingProgress"></div>
+      </div>
+      <small id="loadingPercent">0%</small>
+    </section>
+  </main>
+</body>
+</html>

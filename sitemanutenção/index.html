@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liftcore Maintenance | Login</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-panel" aria-labelledby="loginTitle">
+      <img class="brand-mark" src="./assets/liftcore-logo.png" alt="" aria-hidden="true">
+      <p class="eyebrow">Entrada de turno</p>
+      <h1 id="loginTitle">Liftcore Maintenance</h1>
+      <p class="subtitle">Acesse sua fila tecnica, checklist e registros do elevador EVA.</p>
+
+      <form>
+        <div class="input-group">
+          <label for="login">Login</label>
+          <input id="login" type="text" inputmode="numeric" autocomplete="username" placeholder="Digite seu login" required>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Senha</label>
+          <input id="password" type="password" autocomplete="current-password" placeholder="Digite sua senha" required>
+        </div>
+
+        <div class="options">
+          <label>
+            <input id="rememberLogin" type="checkbox">
+            Lembrar login
+          </label>
+          <span>Cadastro feito pelo admin</span>
+        </div>
+
+        <button type="submit" class="login-btn">Entrar</button>
+
+        <p class="extra">
+          Use a credencial vinculada ao seu perfil tecnico.
+        </p>
+
+        <div class="form-message" id="error-message" style="display:none;" role="alert"></div>
+      </form>
+    </section>
+
+    <aside class="login-summary" aria-label="Resumo do sistema">
+      <span class="status-pill">EVA online</span>
+      <h2>Checklist, alertas e perfis reais para a rotina do tecnico.</h2>
+      <div class="summary-list">
+        <span>Fila de prioridade do turno</span>
+        <span>Atualizacao direta da planilha</span>
+        <span>Cadastro de equipe pelo administrador</span>
+      </div>
+    </aside>
+  </main>
+
+  <script src="./js/local-api.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>

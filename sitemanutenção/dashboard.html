@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liftcore Maintenance | Turno Tecnico</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./css/dashboard.css">
+</head>
+<body>
+  <aside class="sidebar" role="navigation" aria-label="Menu principal">
+    <a class="brand" href="#dashboard" data-nav="dashboard" aria-label="Ir para turno">
+      <img class="brand-logo" src="./assets/liftcore-logo.png" alt="" aria-hidden="true">
+      <span>
+        <strong>Liftcore</strong>
+        <small>Maintenance</small>
+      </span>
+    </a>
+
+    <nav class="menu" aria-label="Navegacao">
+      <a class="active" href="#dashboard" data-nav="dashboard" aria-current="page">
+        <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+        Turno
+      </a>
+      <a href="#maintenance" data-nav="maintenance">
+        <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+        Checklist
+      </a>
+      <a href="#elevators" data-nav="elevators">
+        <i class="fa-solid fa-elevator" aria-hidden="true"></i>
+        Elevador
+      </a>
+      <a href="#alerts" data-nav="alerts">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        Alertas
+      </a>
+      <a href="#reports" data-nav="reports">
+        <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+        Relatorios
+      </a>
+      <a href="#technicians" data-nav="technicians">
+        <i class="fa-solid fa-id-badge" aria-hidden="true"></i>
+        Equipe
+      </a>
+      <a href="#settings" data-nav="settings">
+        <i class="fa-solid fa-gear" aria-hidden="true"></i>
+        Acessos
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main" role="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow" id="sectionEyebrow">Turno tecnico</p>
+        <h1 id="pageTitle">Painel do EVA</h1>
+        <p id="pageSubtitle">Fila de manutencao, checklist e alertas do elevador.</p>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-button" type="button" aria-label="Atualizar dados" data-action="sync">
+          <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+        </button>
+
+        <button class="icon-button" type="button" aria-label="Alertas" data-action="notifications">
+          <i class="fa-solid fa-bell" aria-hidden="true"></i>
+          <span class="notification-dot" aria-hidden="true"></span>
+        </button>
+
+        <div class="user-dropdown" id="userDropdown">
+          <button id="userButton" class="user-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="userMenu">
+            <span class="avatar" aria-hidden="true">A</span>
+            <span class="user-label">
+              <strong>Admin</strong>
+              <small>Operador</small>
+            </span>
+            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+          </button>
+
+          <div id="userMenu" class="user-menu" role="menu" aria-hidden="true" aria-label="Menu do usuario">
+            <div class="user-card">
+              <span class="avatar" aria-hidden="true">A</span>
+              <span class="user-info">
+                <strong id="userName">Administrador</strong>
+                <small id="userRole">Operador de manutencao</small>
+              </span>
+            </div>
+            <div class="user-menu-actions">
+              <button class="user-menu-item" type="button" data-action="profile" role="menuitem">Perfil</button>
+              <button class="user-menu-item" type="button" data-action="settings" role="menuitem">Acessos</button>
+              <button class="user-menu-item" type="button" data-action="logout" role="menuitem">Sair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="view active" id="view-dashboard" data-view="dashboard" aria-labelledby="dashboardTitle">
+      <section class="shift-band" aria-labelledby="dashboardTitle">
+        <div>
+          <p class="eyebrow light">Agora</p>
+          <h2 id="dashboardTitle">Turno em campo</h2>
+          <p id="shiftGreeting">Carregando fila tecnica...</p>
+        </div>
+        <div class="shift-focus">
+          <span id="shiftStatusPill" class="status warning">Sincronizando</span>
+          <strong id="shiftFocus">Planilha de manutencao</strong>
+          <small id="shiftHint">Os itens abaixo vem do XLSX de manutencao.</small>
+        </div>
+      </section>
+
+      <div class="metrics" id="statusCards" aria-label="Indicadores principais">
+        <article class="metric">
+          <span class="metric-icon amber"><i class="fa-solid fa-list-check" aria-hidden="true"></i></span>
+          <span>Itens no checklist</span>
+          <strong id="maintenanceToday" data-bind="maintenance-today">0</strong>
+          <small>Base da planilha</small>
+        </article>
+        <article class="metric">
+          <span class="metric-icon red"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i></span>
+          <span>Prioridade alta</span>
+          <strong id="criticalFailures" data-bind="critical-failures">0</strong>
+          <small>Atencao do turno</small>
+        </article>
+        <article class="metric">
+          <span class="metric-icon green"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i></span>
+          <span>Conformidade</span>
+          <strong id="systemUptime" data-bind="system-uptime">98%</strong>
+          <small>Checklist concluido</small>
+        </article>
+      </div>
+
+      <div class="operations-grid">
+        <section class="panel span-2" aria-labelledby="queueTitle">
+          <div class="panel-header">
+            <div>
+              <h2 id="queueTitle">Fila do tecnico</h2>
+              <p>Itens abertos por prioridade.</p>
+            </div>
+            <button class="text-button" type="button" data-open-view="maintenance">Abrir checklist</button>
+          </div>
+          <div class="work-list" id="priorityQueue"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="assetTitle">
+          <div class="panel-header">
+            <div>
+              <h2 id="assetTitle">Estado do EVA</h2>
+              <p>Leitura essencial.</p>
+            </div>
+          </div>
+          <div class="asset-status" id="assetStatus"></div>
+        </section>
+      </div>
+
+      <div class="quick-actions" aria-label="Acoes rapidas">
+        <button type="button" data-action="checklist"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>Checklist</button>
+        <button type="button" data-action="notifications"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>Alertas</button>
+        <button type="button" data-open-view="reports"><i class="fa-solid fa-file-export" aria-hidden="true"></i>Relatorio</button>
+      </div>
+    </section>
+
+    <section class="view" id="view-maintenance" data-view="maintenance" aria-labelledby="maintenanceTitle">
+      <section class="clock-panel" id="revisionClock" aria-labelledby="revisionClockTitle">
+        <div>
+          <p class="eyebrow">Bater cartao</p>
+          <h2 id="revisionClockTitle">Revisao ainda nao iniciada</h2>
+          <p id="revisionClockText">Clique em iniciar para liberar os botoes rapidos do checklist.</p>
+        </div>
+        <div class="clock-actions">
+          <button class="primary-button clock-start" type="button" data-action="start-review">
+            <i class="fa-solid fa-play" aria-hidden="true"></i>
+            Iniciar revisao
+          </button>
+          <button class="text-button clock-finish" type="button" data-action="finish-review">
+            <i class="fa-solid fa-stop" aria-hidden="true"></i>
+            Finalizar
+          </button>
+        </div>
+      </section>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="maintenanceTitle">Checklist de manutencao</h2>
+            <p>Siga a ordem: iniciar revisao, marcar cada item e salvar observacoes importantes.</p>
+          </div>
+          <button class="primary-button" type="button" data-action="new-ticket">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+            Novo item
+          </button>
+        </div>
+
+        <div id="maintenanceCreateSlot"></div>
+
+        <div class="checklist-toolbar">
+          <span id="checklistProgress">0 de 0 concluidos</span>
+          <span id="checklistModeHint">Inicie a revisao para editar.</span>
+        </div>
+
+        <div class="checklist-list" id="checklistCards" aria-label="Checklist de manutencao"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-elevators" data-view="elevators" aria-labelledby="elevatorsTitle">
+      <div class="asset-layout" id="assetDetail">
+        <section class="panel span-2">
+          <div class="panel-header">
+            <div>
+              <h2 id="elevatorsTitle">Elevador EVA</h2>
+              <p>Ativo principal de manutencao.</p>
+            </div>
+          </div>
+          <div class="asset-map">
+            <div class="elevator-art" id="elevatorArt" aria-label="Arte tecnica do elevador">
+              <div class="floor-stack" id="floorStack"></div>
+            </div>
+            <div class="asset-copy">
+              <span class="status success" id="assetMainStatus">Operando</span>
+              <h3>Elevador principal</h3>
+              <p id="assetMainCopy">Ultima revisao sincronizada com o checklist.</p>
+              <div class="spec-grid" id="liveSpecGrid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Especificacoes</h2>
+              <p>Dados tecnicos do EVA.</p>
+            </div>
+          </div>
+          <div class="routine-list" id="routineList"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="view-alerts" data-view="alerts" aria-labelledby="alertsPageTitle">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="alertsPageTitle">Alertas</h2>
+            <p>Itens que merecem resposta antes do encerramento.</p>
+          </div>
+        </div>
+        <div class="alert-list wide" id="alertsList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-reports" data-view="reports" aria-labelledby="reportsTitle">
+      <div class="report-grid">
+        <article class="report-card">
+          <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+          <h3>Excel apresentavel</h3>
+          <p>Resumo, checklist completo e aba tecnica do elevador.</p>
+          <button type="button" data-report="maintenance.xlsx">Baixar XLSX</button>
+        </article>
+        <article class="report-card">
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+          <h3>PDF do elevador</h3>
+          <p>Andar, porta, carro dentro, sensores e pendencias.</p>
+          <button type="button" data-report="elevator.pdf">Baixar PDF</button>
+        </article>
+        <article class="report-card">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <h3>Entrega do turno</h3>
+          <p>Confira pendencias antes de fechar a revisao.</p>
+          <button type="button" data-open-view="alerts">Ver pendencias</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-technicians" data-view="technicians" aria-labelledby="techniciansTitle">
+      <div class="panel profile-panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="techniciansTitle">Equipe e perfis</h2>
+            <p>Credenciais cadastradas no backend local.</p>
+          </div>
+        </div>
+        <div class="team-grid" id="profilesGrid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-settings" data-view="settings" aria-labelledby="settingsTitle">
+      <div class="settings-layout" id="settingsPanel">
+        <section class="settings-hero panel" aria-labelledby="settingsTitle">
+          <div>
+            <p class="eyebrow">Operacao</p>
+            <h2 id="settingsTitle">Configuracoes do turno</h2>
+            <p>Regras que mudam como o painel organiza checklist, alertas e entrega.</p>
+          </div>
+          <div class="settings-score" aria-label="Resumo das regras ativas">
+            <strong id="settingsEnabledCount">0</strong>
+            <span>regras ativas</span>
+          </div>
+        </section>
+
+        <section class="settings-grid" aria-label="Regras operacionais">
+          <article class="settings-card">
+            <div class="settings-card-title">
+              <i class="fa-solid fa-clipboard-check" aria-hidden="true"></i>
+              <span>
+                <strong>Checklist</strong>
+                <small>Controle de edicao e foco do tecnico.</small>
+              </span>
+            </div>
+            <label class="setting-row compact">
+              <span>
+                <strong>Exigir revisao iniciada</strong>
+                <small>Bloqueia edicao ate o tecnico bater o inicio.</small>
+              </span>
+              <input type="checkbox" data-setting="requireReview">
+            </label>
+            <label class="setting-row compact">
+              <span>
+                <strong>Fila apenas com pendencias</strong>
+                <small>Remove itens concluidos da fila do turno.</small>
+              </span>
+              <input type="checkbox" data-setting="pendingOnly">
+            </label>
+            <label class="setting-row compact">
+              <span>
+                <strong>Destacar prioridade critica</strong>
+                <small>Mostra falhas criticas com mais peso visual.</small>
+              </span>
+              <input type="checkbox" data-setting="highlightCritical">
+            </label>
+          </article>
+
+          <article class="settings-card">
+            <div class="settings-card-title">
+              <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+              <span>
+                <strong>Alertas</strong>
+                <small>O que entra na tela de risco.</small>
+              </span>
+            </div>
+            <label class="setting-row compact">
+              <span>
+                <strong>Abrir alertas automaticamente</strong>
+                <small>Leva o operador para Alertas quando houver risco alto.</small>
+              </span>
+              <input type="checkbox" data-setting="autoOpenAlerts">
+            </label>
+            <label class="setting-row stack">
+              <span>
+                <strong>Prioridade minima para alerta</strong>
+                <small>Define o corte da lista de alertas.</small>
+              </span>
+              <select data-setting="alertThreshold">
+                <option value="baixa">Baixa</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
+                <option value="critica">Critica</option>
+              </select>
+            </label>
+            <label class="setting-row stack">
+              <span>
+                <strong>Itens na fila do turno</strong>
+                <small>Quantidade maxima exibida no painel inicial.</small>
+              </span>
+              <select data-setting="queueLimit">
+                <option value="3">3 itens</option>
+                <option value="5">5 itens</option>
+                <option value="8">8 itens</option>
+              </select>
+            </label>
+          </article>
+
+          <article class="settings-card">
+            <div class="settings-card-title">
+              <i class="fa-solid fa-file-shield" aria-hidden="true"></i>
+              <span>
+                <strong>Entrega</strong>
+                <small>Criterios do fechamento do turno.</small>
+              </span>
+            </div>
+            <label class="setting-row compact">
+              <span>
+                <strong>Confirmar pendencias ao finalizar</strong>
+                <small>Evita encerrar revisao com itens abertos sem aviso.</small>
+              </span>
+              <input type="checkbox" data-setting="confirmPendingOnFinish">
+            </label>
+            <label class="setting-row stack">
+              <span>
+                <strong>Meta de conformidade</strong>
+                <small>Percentual esperado para considerar o turno saudavel.</small>
+              </span>
+              <input type="number" min="0" max="100" step="1" data-setting="completionTarget">
+            </label>
+            <div class="settings-note" id="settingsHealthNote">Meta operacional aguardando dados.</div>
+          </article>
+        </section>
+
+        <section class="settings-data panel" aria-labelledby="settingsDataTitle">
+          <div class="panel-header">
+            <div>
+              <h2 id="settingsDataTitle">Dados conectados</h2>
+              <p>Resumo do que o painel esta lendo agora.</p>
+            </div>
+            <button class="text-button" type="button" data-action="sync">
+              <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+              Sincronizar
+            </button>
+          </div>
+          <div class="settings-data-grid" id="settingsDataGrid"></div>
+        </section>
+
+        <section class="access-panel panel" aria-labelledby="accessTitle">
+          <div class="panel-header">
+            <div>
+              <h2 id="accessTitle">Acessos</h2>
+              <p>Cadastre quem pode operar o checklist e veja os perfis ativos.</p>
+            </div>
+          </div>
+          <div id="adminRegisterSlot"></div>
+          <div class="access-list" id="settingsUsersList"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="./js/local-api.js"></script>
+  <script src="./js/dashboard.js"></script>
+  <script src="./js/userMenu.js"></script>
+</body>
+</html>

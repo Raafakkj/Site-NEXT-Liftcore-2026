@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LiftCore - Dashboard</title>
+  <style>
+    html,
+    body { background: #f5f7fb; }
+    html.dark-mode,
+    html.dark-mode body { background: #0f172a; }
+    html.skip-loader .loader-screen { display: none !important; }
+  </style>
+  <script>
+    (() => {
+      try {
+        if (sessionStorage.getItem('liftcore_loaded')) {
+          document.documentElement.classList.add('skip-loader');
+        }
+        const savedTheme = localStorage.getItem('theme');
+        const useDarkTheme = savedTheme
+          ? savedTheme === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        if (useDarkTheme) {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (error) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="./js/api.js"></script>
+  <script defer src="./js/charts.js"></script>
+  <script defer src="./js/dashboard.js"></script>
+  <script defer src="./js/app.js"></script>
+</head>
+<body>
+
+  <div class="loader-screen" id="loader" aria-label="Carregando LiftCore">
+    <div class="loader-content">
+      <div class="loader-logo"><img src="./assets/liftcore-logo.png" alt="" aria-hidden="true"></div>
+      <h1>LiftCore</h1>
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="logo"><img src="./assets/liftcore-logo.png" alt="" aria-hidden="true"><span>LiftCore</span></div>
+    <nav class="menu" aria-label="Menu principal">
+      <a href="./index.html" class="menu-item active"><i class="fa-solid fa-gauge-high"></i><span>Painel</span></a>
+      <a href="./vehicles.html" class="menu-item"><i class="fa-solid fa-car"></i><span>Ve&iacute;culos</span></a>
+      <a href="./elevator.html" class="menu-item"><i class="fa-solid fa-elevator"></i><span>Elevador</span></a>
+      <a href="./cameras.html" class="menu-item"><i class="fa-solid fa-video"></i><span>C&acirc;meras</span></a>
+      <a href="./maintenance.html" class="menu-item"><i class="fa-solid fa-screwdriver-wrench"></i><span>Manuten&ccedil;&atilde;o</span></a>
+    </nav>
+  </aside>
+  <div class="main-container">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <p class="eyebrow">Operacao</p>
+          <h2>Painel LiftCore</h2>
+          <p class="topbar-subtitle">Visao consolidada de seguranca, elevador e veiculos.</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" aria-label="Notifica&ccedil;&otilde;es"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </header>
+    <main class="content">
+      <section class="stats-grid" aria-label="Resumo operacional">
+        <div class="card stat-card"><div><p class="card-title">Seguranca</p><h2 id="dashboard-status-value">SEGURO</h2><span class="positive" id="dashboard-status-note">Leitura normal</span></div><div class="card-icon green"><i class="fa-solid fa-shield-halved"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Placa Atual</p><h2 id="dashboard-current-vehicle-plate-value">FTR-9021</h2><span class="positive" id="dashboard-current-vehicle-plate-note">BMW X6</span></div><div class="card-icon blue"><i class="fa-solid fa-id-card"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Andar</p><h2 id="dashboard-floor-value">G4</h2><span class="positive" id="dashboard-floor-note">Descendo</span></div><div class="card-icon blue"><i class="fa-solid fa-arrow-down"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Velocidade</p><h2 id="dashboard-speed-value">1.4m/s</h2><span class="positive" id="dashboard-speed-note">Normal</span></div><div class="card-icon green"><i class="fa-solid fa-gauge"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Peso</p><h2 id="dashboard-weight-value">2.1T</h2><span class="positive" id="dashboard-weight-note">Est&aacute;vel</span></div><div class="card-icon purple"><i class="fa-solid fa-weight-scale"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Cabine</p><h2 id="dashboard-cabin-temperature-value">24&deg;C</h2><span class="positive" id="dashboard-cabin-temperature-note">Confort&aacute;vel</span></div><div class="card-icon orange"><i class="fa-solid fa-temperature-half"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Motor</p><h2 id="dashboard-temperature-value">48&deg;C</h2><span class="positive" id="dashboard-temperature-note">Normal</span></div><div class="card-icon red"><i class="fa-solid fa-fire"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Porta</p><h2 id="dashboard-door-value">TRAVADA</h2><span class="negative" id="dashboard-door-note">Seguro</span></div><div class="card-icon orange"><i class="fa-solid fa-door-closed"></i></div></div>
+      </section>
+      <section class="charts-grid" aria-label="Indicadores em gr&aacute;ficos">
+        <div class="card chart-card"><h3>Movimento</h3><div class="chart-frame"><canvas id="lineChart"></canvas></div></div>
+        <div class="card chart-card"><h3>Peso por Ciclo</h3><div class="chart-frame"><canvas id="barChart"></canvas></div></div>
+        <div class="card chart-card"><h3>Sistema</h3><div class="chart-frame"><canvas id="donutChart"></canvas></div></div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

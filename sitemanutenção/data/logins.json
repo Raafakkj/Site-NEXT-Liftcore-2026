@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "admin",
+      "login": "571073",
+      "name": "Administrador",
+      "shortName": "Admin",
+      "role": "Administrador",
+      "roleDescription": "Administrador do sistema",
+      "profile": {
+        "fullName": "Administrador Liftcore",
+        "phone": "",
+        "email": "",
+        "specialty": "Gestao de manutencao",
+        "status": "Disponivel"
+      },
+      "permissions": [
+        "admin",
+        "maintenance:read",
+        "maintenance:write",
+        "users:write"
+      ],
+      "passwordHash": "c1fdbd9241de970c933419cbc96d4f2948c8c729edd476c0b4a6ae2c16338b6d",
+      "passwordSalt": "liftcore-admin-local"
+    },
+    {
+      "id": "vinicius-olivete-123",
+      "login": "123",
+      "name": "Vinicius Olivete",
+      "shortName": "Vinicius Olivete",
+      "role": "Tecnico",
+      "roleDescription": "Tecnico de manutencao",
+      "profile": {
+        "fullName": "Vinicius Olivete",
+        "phone": "",
+        "email": "",
+        "specialty": "Manutencao geral",
+        "status": "Disponivel"
+      },
+      "permissions": [
+        "maintenance:read",
+        "maintenance:write"
+      ],
+      "passwordHash": "65a9364c6e062af35f008167fac7c7d175590e826f0de4deb5e143c3ea35657b",
+      "passwordSalt": "d043294392170f7e35ebe5e52b0bc2d3"
+    }
+  ]
+}

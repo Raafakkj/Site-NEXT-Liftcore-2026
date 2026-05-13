@@ -1,0 +1,22 @@
+{
+  "elevator": {
+    "plate": "BRA2E19",
+    "floor": "G2",
+    "direction": "Parado",
+    "speed_mps": 1.4,
+    "weight_KG": 4.8,
+    "cabin_temp_c": 28,
+    "motor_temp_c": 48,
+    "door": "FECHADA"
+  },
+  "cameras": [
+    {
+      "name": "CAMERA 01",
+      "online": false
+    },
+    {
+      "name": "CAMERA 02",
+      "online": false
+    }
+  ]
+}

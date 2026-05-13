@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LiftCore - Elevador</title>
+  <style>
+    html,
+    body { background: #f5f7fb; }
+    html.dark-mode,
+    html.dark-mode body { background: #0f172a; }
+    html.skip-loader .loader-screen { display: none !important; }
+  </style>
+  <script>
+    (() => {
+      try {
+        if (sessionStorage.getItem('liftcore_loaded')) {
+          document.documentElement.classList.add('skip-loader');
+        }
+        const savedTheme = localStorage.getItem('theme');
+        const useDarkTheme = savedTheme
+          ? savedTheme === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        if (useDarkTheme) {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch (error) {}
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script defer src="./js/app.js"></script>
+</head>
+<body>
+
+  <div class="loader-screen" id="loader" aria-label="Carregando LiftCore">
+    <div class="loader-content">
+      <div class="loader-logo"><img src="./assets/liftcore-logo.png" alt="" aria-hidden="true"></div>
+      <h1>LiftCore</h1>
+      <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="logo"><img src="./assets/liftcore-logo.png" alt="" aria-hidden="true"><span>LiftCore</span></div>
+    <nav class="menu" aria-label="Menu principal">
+      <a href="./index.html" class="menu-item"><i class="fa-solid fa-gauge-high"></i><span>Painel</span></a>
+      <a href="./vehicles.html" class="menu-item"><i class="fa-solid fa-car"></i><span>Ve&iacute;culos</span></a>
+      <a href="./elevator.html" class="menu-item active"><i class="fa-solid fa-elevator"></i><span>Elevador</span></a>
+      <a href="./cameras.html" class="menu-item"><i class="fa-solid fa-video"></i><span>C&acirc;meras</span></a>
+      <a href="./maintenance.html" class="menu-item"><i class="fa-solid fa-screwdriver-wrench"></i><span>Manuten&ccedil;&atilde;o</span></a>
+    </nav>
+  </aside>
+  <div class="main-container">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <h2>Elevador</h2>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" aria-label="Notifica&ccedil;&otilde;es"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn" id="theme-toggle" aria-label="Alternar tema"><i class="fa-solid fa-moon"></i></button>
+      </div>
+    </header>
+    <main class="content">
+      <section class="stats-grid" aria-label="Resumo do elevador">
+        <div class="card stat-card"><div><p class="card-title">Velocidade</p><h2>1.4m/s</h2><span class="positive">Normal</span></div><div class="card-icon blue"><i class="fa-solid fa-gauge"></i></div></div>
+        <div class="card stat-card"><div><p class="card-title">Temperatura do Motor</p><h2>48&deg;C</h2><span class="positive">Normal</span></div><div class="card-icon orange"><i class="fa-solid fa-fire"></i></div></div>
+      </section>
+      <section class="card"><h3>Controle</h3><div class="control-grid"><button class="icon-btn control-button">SUBIR</button><button class="icon-btn control-button">PARAR</button><button class="icon-btn control-button">DESCER</button></div></section>
+    </main>
+  </div>
+</body>
+</html>
